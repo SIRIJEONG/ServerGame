@@ -35,11 +35,7 @@ public class PlayerHealth : MonoBehaviourPunCallbacks
 
     private void Die()
     {
-
-        if (maxHealth >= 0)
-        {
-            Destroy(gameObject);
-        }
+            Destroy(gameObject);       
         // 사망 처리 로직을 구현
         // 예를 들어, 플레이어를 다시 소환하거나 게임 오버 처리 등을 수행
     }

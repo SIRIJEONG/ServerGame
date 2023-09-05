@@ -1029,6 +1029,7 @@ MonoBehaviour:
   jumpForce: 10
   aa: {fileID: 9170789137471368237, guid: 4a1af1e0b0418274bb2d9d0e4d5a2578, type: 3}
   bb: {fileID: 1607113299593993505}
+  player: {fileID: 0}
 --- !u!114 &1076628029953151288
 MonoBehaviour:
   m_ObjectHideFlags: 0

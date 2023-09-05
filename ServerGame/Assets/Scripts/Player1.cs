@@ -14,10 +14,24 @@ public class Player1 : MonoBehaviour
     private PlayerInput playerInput; // 플레이어 입력을 알려주는 컴포넌트
     private PhotonAnimatorView photonAnimatorView; // PhotonAnimatorView 변수 추가
 
-    bool isFireReady;
-    float fireDelay;
 
 
+
+
+    private bool change = false;
+    private Mesh originMesh;
+    private Material originMaterial;
+    //private Shader originShader;
+
+    public static GameObject hitObject;
+    public static Mesh hitMesh = null;
+    public static Material hitMaterial = null;
+    public static Shader hitShader = null;
+
+    // 실제로 움직이는 오브잭트
+
+    public GameObject aa;       // 변신하는 오브젝트 저장하는 오브잭트
+    public GameObject bb;       // 플레이어 오브젝트
 
 
 
@@ -33,6 +47,81 @@ public class Player1 : MonoBehaviour
     }
     private void Update()
     {
+
+
+
+
+
+
+
+
+        if (Input.GetMouseButtonDown(1))
+        {
+
+
+            if (!change)
+            {
+                Vector3 playerPosition = transform.position;
+
+                // y값 오프셋 적용하여 레이캐스트 시작 위치 생성
+                Vector3 raycastStartPos = new Vector3(playerPosition.x, playerPosition.y + 0.5f, playerPosition.z);
+
+
+                RaycastHit hitInfo;
+
+                // ChangeAble이란 태그가 달린 오브잭트로만 변신 가능
+                if (Physics.Raycast(raycastStartPos, transform.forward, out hitInfo) && hitInfo.collider.CompareTag("Ground"))
+                {
+                    // 맞은 오브젝트의 정보 가져오기
+                    hitObject = hitInfo.collider.gameObject;
+
+
+                    MeshFilter meshFilter = hitObject.GetComponent<MeshFilter>();
+                    if (meshFilter != null)
+                    {
+                        hitMesh = meshFilter.sharedMesh;
+                    }
+
+                    Renderer renderer = hitObject.GetComponent<Renderer>();
+                    if (renderer != null)
+                    {
+                        hitMaterial = renderer.sharedMaterial;
+                        //hitShader = hitMaterial.shader;
+                    }
+                    //ChangePlayer(hitMesh, hitMaterial, hitShader);
+
+                    aa.SetActive(true);
+                    bb.SetActive(false);
+
+                    change = true;
+                }
+            }
+            else                    //변신 풀리는 코드
+            {
+                MeshFilter meshFilter = GetComponent<MeshFilter>();
+                if (meshFilter != null)
+                {
+                    meshFilter.sharedMesh = originMesh;
+                }
+
+                Renderer renderer = GetComponent<Renderer>();
+                if (renderer != null)
+                {
+                    renderer.sharedMaterial = originMaterial;
+                    //renderer.material.shader = originShader;
+                }
+                aa.SetActive(false);
+                bb.SetActive(true);
+
+                change = false;
+            }
+        }
+
+
+
+
+
+
         isJumping = PlayerController.isJumping;
         animator.SetBool("Jump", isJumping);
 
